@@ -76,8 +76,6 @@ target/
 # Jupyter NB Checkpoints
 .ipynb_checkpoints/
 
-# Mac OS-specific storage files
-.DS_Store
 
 # vim
 *.swp
@@ -86,11 +84,8 @@ target/
 # Mypy cache
 .mypy_cache/
 
-# Exclude virtual environment
-.venv/
-
 # Exclude trained models
 /models/
 
 # exclude data from source control by default
-# /data/
+/data/
