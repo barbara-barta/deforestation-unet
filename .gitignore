@@ -88,7 +88,9 @@ target/
 /models/
 
 # exclude data from source control by default
-/data/
+/data/RGB
+/data/AT4
+/data/AM4
 
 # notes
 notes.txt
