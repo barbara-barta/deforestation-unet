@@ -1,3 +1,5 @@
 ipykernel
 python-dotenv
 zenodo-get
+rioxarray
+earthpy
