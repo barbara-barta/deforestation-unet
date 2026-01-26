@@ -72,3 +72,10 @@ This command creates a copy of `.env.example` and names it `.env`, allowing you 
     └── services                <- Service classes to connect with external platforms, tools, or APIs
         └── __init__.py 
 ```
+
+
+
+# My notes
+
+Note: Google Drive mounting is not supported when running Colab kernels inside VS Code.
+For first-time data setup, open the notebook in browser-based Colab.
