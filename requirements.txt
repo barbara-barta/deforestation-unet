@@ -6,5 +6,5 @@ earthpy
 geopandas
 matplotlib
 seaborn
-unrar
+patool
 matplotlib 
