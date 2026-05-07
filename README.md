@@ -4,35 +4,19 @@
     <img src="https://img.shields.io/badge/Datalumina-Project%20Template-2856f7" alt="Datalumina Project" />
 </a>
 
-## Cookiecutter Data Science
-This project template is a simplified version of the [Cookiecutter Data Science](https://cookiecutter-data-science.drivendata.org) template, created to suit the needs of Datalumina and made available as a GitHub template.
+## Overview
 
-## Adjusting .gitignore
+This project recreates and explores the paper:
 
-Ensure you adjust the `.gitignore` file according to your project needs. For example, since this is a template, the `/data/` folder is commented out and data will not be exlucded from source control:
+**"An attention-based U-Net for detecting deforestation within satellite sensor imagery"**  
+by David John and Ce Zhang.
 
-```plaintext
-# exclude data from source control by default
-# /data/
-```
-
-Typically, you want to exclude this folder if it contains either sensitive data that you do not want to add to version control or large files.
-
-## Duplicating the .env File
-To set up your environment variables, you need to duplicate the `.env.example` file and rename it to `.env`. You can do this manually or using the following terminal command:
-
-```bash
-cp .env.example .env # Linux, macOS, Git Bash, WSL
-copy .env.example .env # Windows Command Prompt
-```
-
-This command creates a copy of `.env.example` and names it `.env`, allowing you to configure your environment variables specific to your setup.
-
+The goal of this project is to reproduce the paper’s methodology for deforestation detection using satellite imagery and an attention-based U-Net architecture. The project includes data preprocessing, feature engineering, model training, evaluation, and visualization of prediction results.
 
 ## Project Organization
 
 ```
-├── LICENSE            <- Open-source license if one is chosen
+├── LICENSE            <- Open-source license
 ├── README.md          <- The top-level README for developers using this project
 ├── data
 │   ├── external       <- Data from third party sources
@@ -42,13 +26,11 @@ This command creates a copy of `.env.example` and names it `.env`, allowing you 
 │
 ├── models             <- Trained and serialized models, model predictions, or model summaries
 │
-├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-│                         the creator's initials, and a short `-` delimited description, e.g.
-│                         `1.0-jqp-initial-data-exploration`
+├── notebooks          <- Jupyter notebooks. 
 │
 ├── references         <- Data dictionaries, manuals, and all other explanatory materials
 │
-├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
+├── reports            <- Generated analysis.
 │   └── figures        <- Generated graphics and figures to be used in reporting
 │
 └── src                         <- Source code for this project
@@ -72,8 +54,6 @@ This command creates a copy of `.env.example` and names it `.env`, allowing you 
     └── services                <- Service classes to connect with external platforms, tools, or APIs
         └── __init__.py 
 ```
-
-
 
 # My notes
 
