@@ -10,4 +10,3 @@ patool
 matplotlib 
 torch
 torchvision
-pytorch-lightning
