@@ -35,9 +35,7 @@ Considering the small sample size, we cannot say that the results are conclusive
 
 ## Visualisations
 
-confusion matrices (ADD?)
-
-The loss plot of the Attention U-net model shows convergence. Interestingly, the validation loss is smaller than the train loss. With the absence of stochasticity in the preprocessing pipeline, it seems that the validation set is simply more difficult.
+The loss curve plot of the Attention U-net model shows convergence. Interestingly, the validation loss is smaller than the train loss. With the absence of stochasticity in the preprocessing pipeline, it seems that the validation set is simply more difficult.
 <p align="center">
   <img width="700" alt="image" src="https://github.com/barbara-barta/deforestation-unet/blob/main/reports/figures/attn_loss_plot.png?raw=true" />
 </p>
@@ -95,7 +93,7 @@ For both the attention and vanilla U-net, the BCE loss was used with the Adam op
 ## Future Work / Limitations
 
 An idea for future work is motivated by a common problem in climate monitoring using EO data: there is an abundance of unlabeled data gathered through various EO projects, such as the Copernicus Programme and the LANDSAT Program. However, labeled data is sparse. This presents a difficulty if we want to perform semantic segmentation on a region for which there is no labeled forest/non-forest data. One could use a model that was trained on a different region, but it is questionable how well that model would perform, given that forests in different geographical regions might look very different. 
-One way to resolve this issue is to use contrastive learning, where a part of the model is pre-trained on a large, unlabeled, dataset. The loss criterion is chosen in such a way that the model learns features of the dataset which remain unchanged under variable circumstances, such as differnt lighting or orientation. The model is then fine-tuned on the specific task - in our case, semantic segmentation. A variant of this paradigm that was specifically designed using EO data is GLCNet. (ADD)
+One way to resolve this issue is to use contrastive learning, where a general model is pre-trained on a large, unlabeled, dataset. The loss criterion is chosen in such a way that the model learns features of the dataset which remain unchanged under variable circumstances, such as differnt lighting or orientation. The model is then fine-tuned on the specific task - in our case, semantic segmentation. A variant of this paradigm that was specifically designed using remote sensing imaging data is the **global style and local matching contrastive learning network (GLCNet)**. Using this method, both the global image-level representation and the local segment representations are learned.
 
 ## Project Organization
 
@@ -125,7 +123,7 @@ One way to resolve this issue is to use contrastive learning, where a part of th
     │
     ├── dataset.py              <- Scripts to download or generate data
     │
-    ├── features.py             <- Code to create features for modeling (ADD remove this part)
+    ├── features.py             <- Code to create features for modeling
     │
     │    
     ├── modeling                
@@ -174,18 +172,13 @@ python train.py
 python evaluate.py
 ```
 
-### My notes
-
 Note: Google Drive mounting is not supported when running Colab kernels inside VS Code.
 For first-time data setup, open the notebook in browser-based Colab.
 
 ## References
 
-Technologies Used
-
-The project was developed primarily in Python using PyTorch for deep learning and model training.
-
 ### Tools
+The project was developed primarily in Python using PyTorch for deep learning and model training.
 - NumPy for numerical operations,
 - Matplotlib for visualisation,
 - Rasterio for reading GeoTIFF satellite imagery,
@@ -194,16 +187,26 @@ The project was developed primarily in Python using PyTorch for deep learning an
 - Google Colab for GPU-based experimentation and training.
 
 ### Datasets
-- (ADD)
-### Articles
-- (ADD)
-- (REMOVE THE ONES BELOW)
-- Selvaraju et al., *Grad-CAM: Visual Explanations from Deep Networks via Gradient-based Localization*, 2019 [https://arxiv.org/pdf/1610.02391](https://arxiv.org/pdf/1610.02391)
-- Yun et al., *CutMix: Regularization Strategy to Train Strong Classifiers
 
+This project uses Sentinel-2 satellite imagery from the Copernicus Programme for forest vs non-forest semantic segmentation.
+
+Datasets used:
+- Bragagnolo et al., Amazon and Atlantic Forest image datasets for semantic segmentation, [https://zenodo.org/records/4498086](https://zenodo.org/records/4498086)
+
+
+### Articles
+- John, David and Zhang, CE, *An attention-based U-Net for detecting deforestation within satellite sensor imagery*, 2022, [https://www.sciencedirect.com/science/article/pii/S0303243422000113#cited-by](https://www.sciencedirect.com/science/article/pii/S0303243422000113#cited-by)
+- Li, Haifeng and Li, Yi and Zhang, Guo and Liu, Ruoyun and Huang, Haozhe and Zhu, Qing and Tao, Chao, *Global and Local Contrastive Self-Supervised
+Learning for Semantic Segmentation of HR Remote
+Sensing Images*, 2021 [https://arxiv.org/pdf/1610.02391](https://arxiv.org/abs/2106.10605v2)
+- Oktay et al., *Attention U-Net: Learning Where to Look for the Pancreas*, 2018, [https://arxiv.org/abs/1804.03999](https://arxiv.org/abs/1804.03999)
 
 
 ## Author / Contact
 
+This project was developed by Barbara Barta, an Applied Mathematics graduate specialising in machine learning, climate monitoring, and computer vision.
 
+- GitHub: https://github.com/barbara-barta
+- LinkedIn: https://linkedin.com/in/barbara-barta
+- Email: barbara.barta.2@example.com
 
