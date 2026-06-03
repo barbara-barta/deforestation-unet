@@ -60,7 +60,10 @@ Considering that the Attention U-net has 15x less parameters and trains in rough
 
 The project uses a publicly available satellite imagery dataset containing paired satellite images and binary forest masks of the Amazon rainforest. The dataset consists of Sentinel-2 GeoTIFF imagery with a spatial resolution of 10 metres per pixel, and contains four bands: RGB a near-infrared (NIR) band. The train dataset contains 499 images, the validation dataset 100 images, and the test dataset 20 images.
 
-The dataset pipeline includes:
+Before creating the dataset object and the dataloader, validations are performed to check that the data is not corrupt, that each image contains 4 bands, and each mask 1 band, that there are no empty values in the masks and images, that corresponding mask and image have equal bounding boxes, resolution, dimensions and coordinate reference system. The datatype for each mask and image is validated. A check is performed to see if there are any images or masks which are a constant value (such as all zero masks). The last validation identifies two images with heavy cloud coverage, even though authors claim that the dataset contains only images where cloud coverage is less than 30%. Consequently, we check all images for clouds by means of a threshold technique: for each pixel, the reflectance values in all 3 visible light bands are summed. When this quantity is higher than a certain threshold, the pixel is denoted as a "high brightness" pixel. Images with the highest number of "high brightness" pixels are plotted and inspected visually and validated. Boxplots are created with reflectance values in all 4 bands, and outliers are detected.
+All images which do not pass the aforementioned validations are removed from the dataset.
+
+Afterwards, the dataset pipeline is created. It includes:
 1. loading multispectral GeoTIFF images using Rasterio,
 2. min-max normalisation of image values,
 3. conversion to PyTorch tensors,
