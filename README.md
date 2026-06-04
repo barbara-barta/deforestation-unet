@@ -165,14 +165,21 @@ pip install -r requirements.txt
 ### 4. Run training
 
 ```bash
-python train.py
+python train.py --model-name model_name --attention attention --num-epochs num_epochs --lr learning_rate --seed seed
 ```
 
 ### 5. Make predictions
 
 ```bash
-python predict.py
+python predict.py --checkpoint model_checkpoint --input input_file --output output_file
 ```
+
+### 5. Evaluate the models
+
+```bash
+python eval.py --checkpoint model_checkpoint --split test
+```
+
 
 Note: Google Drive mounting is not supported when running Colab kernels inside VS Code.
 For first-time data setup, open the notebook in browser-based Colab.
