@@ -145,16 +145,15 @@ One way to resolve this issue is to use contrastive learning, where a general mo
 ### 1. Clone the repository
 
 ```bash
-git clone [https://github.com/barbara-barta/CIFAR10-classification.git](https://github.com/barbara-barta/deforestation-unet.git)
+git clone https://github.com/barbara-barta/deforestation-unet.git
 cd deforestation-unet
 ```
 
 ### 2. Create a virtual environment (recommended)
 
 ```bash
-python3 -m venv venv
-source venv/bin/activate      # On macOS/Linux
-venv\Scripts\activate         # On Windows
+conda env create -f environment.yml
+conda activate deforestation
 ```
 
 ### 3. Install dependencies
@@ -169,10 +168,10 @@ pip install -r requirements.txt
 python train.py
 ```
 
-### 5. Evaluate the model
+### 5. Make predictions
 
 ```bash
-python evaluate.py
+python predict.py
 ```
 
 Note: Google Drive mounting is not supported when running Colab kernels inside VS Code.
