@@ -156,19 +156,13 @@ conda env create -f environment.yml
 conda activate deforestation
 ```
 
-### 3. Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Run training
+### 3. Run training
 
 ```bash
 python train.py --model-name model_name --attention attention --num-epochs num_epochs --lr learning_rate --seed seed
 ```
 
-### 5. Make predictions
+### 4. Make predictions
 
 ```bash
 python predict.py --checkpoint model_checkpoint --input input_file --output output_file
