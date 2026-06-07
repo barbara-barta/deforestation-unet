@@ -93,6 +93,7 @@ The attention gates, seen below, combine the corresponding encoder-phase vector 
 
 For both the attention and vanilla U-net, the BCE loss was used with the Adam optimizer. The U-net model was trained on 20 epochs with a learning rate of 0.0001, and the Attention U-Net was trained on 60 epochs with a learning rate of 0.0005. No data augmentation was used. 
 
+Experiments were conducted in Google Colab using an NVIDIA A100 GPU with 80 GB of VRAM. Models were implemented in Python 3.12 using PyTorch 2.11.
 ## Future Work / Limitations
 
 An idea for future work is motivated by a common problem in climate monitoring using EO data: there is an abundance of unlabeled data gathered through various EO projects, such as the Copernicus Programme and the LANDSAT Program. However, labeled data is sparse. This presents a difficulty if we want to perform semantic segmentation on a region for which there is no labeled forest/non-forest data. One could use a model that was trained on a different region, but it is questionable how well that model would perform, given that forests in different geographical regions might look very different. 
