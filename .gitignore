@@ -97,3 +97,7 @@ notes.txt
 
 #old files, to be deleted after proj is done
 notebooks/old/
+
+# ignore lightning log files
+tb_logs
+tb_logs.zip
