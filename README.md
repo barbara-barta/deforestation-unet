@@ -26,6 +26,7 @@ For both the vanilla U-net and the attention U-net, the metrics recorded are pre
 | F1 Score  | 0.9612 ± 0.0074     |
 | IoU       | 0.9254 ± 0.0138     |
 | loss      | 0.1134 ± 0.0223     |
+
 The following table shows the Attention U-Net results.
 
 | Metric    | Test Score (Mean ± Std) |
