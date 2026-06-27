@@ -114,32 +114,33 @@ One way to resolve this issue is to use contrastive learning, where a general mo
 ├── reports            <- Generated analysis.
 │   └── figures        <- Generated graphics and figures to be used in reporting
 │
-├── train.py            <- Code to train models
+├── train.py            <- repeated-seed training script
 │
 │
-├── predict.py          <- Code to run model inference with trained models    
+├── predict.py          <- single-image prediction script
 │
 │
-├── eval.py            <- Code to evaluate model
+├── eval.py            <- checkpoint evaluation script
 │
 │
-├── validate_dataset.py            <- Code which executes dataset validation
+├── validate_dataset.py            <- standalone AM4 validation script
 │
 │
 └── src                         <- Source code for this project
     │
     ├── __init__.py             <- Makes src a Python module
     │
-    ├── models.py               <- Creates the (attention) u-net lightning modules
+    ├── models.py               <- UNet, Attention UNet, Lightning training/validation/test logic
     │
-    ├── data.py              <- Scripts to download or generate data
+    ├── data.py              <- transforms, `DeforestationDataset`, `AM4DataModule`
     │
-    ├── plotting.py                <- Code to create visualizations 
+    ├── plotting.py                <- NRG, NDVI, and prediction plotting helpers
     │
-    ├── validation.py                <- Code which contains the validator class
+    ├── validation.py                <- `DatasetValidator` and centroid helper
     │
-    └── utils.py                <- Code with utility functions
+    └── utils.py                <-  path helpers, local/Colab detection, seeds, device helper
 ```
+
 
 ## Installation and usage
 
