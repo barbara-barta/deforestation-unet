@@ -1,44 +1,47 @@
 # Semantic segmentation of Sentinel-2 satellite imagery using (attention) U-Nets
 
-<a target="_blank" href="https://datalumina.com/">
-    <img src="https://img.shields.io/badge/Datalumina-Project%20Template-2856f7" alt="Datalumina Project" />
-</a>
-
 ## Overview
 
-This project recreates and explores the paper "An attention-based U-Net for detecting deforestation within satellite 
-sensor imagery" by David John and Ce Zhang.
+This project implements and evaluates U-Net and Attention U-Net models for binary semantic segmentation of deforestation in Sentinel-2 satellite imagery of the Amazon Rainforest.
 
-The goal of this project is to reproduce the paper’s methodology for semantic segmentation of deforested areas in satellite imagery, re-implementing the code in PyTorch. The aim is to classify each pixel in a satellite image as forest or non-forest using both the U-Net and the attention U-net architecutre. The project includes exploratory analysis of multispectral satellite data (including visualisation of RGB and near-infrared bands and computation of NDVI), as well as data preprocessing, feature engineering, model training, evaluation, and visualization of prediction results.
+The work is based on the paper An attention-based U-Net for detecting deforestation within satellite sensor imagery by David John and Ce Zhang. The original methodology was reimplemented in PyTorch Loghtning.
+
+## Project Highlights
+
+- Implemented U-Net and Attention U-Net architectures for 4-band Sentinel-2 image segmentation.
+- Used PyTorch Lightning for structured training, validation, testing, checkpointing, and TensorBoard logging.
+- Built a custom dataset pipeline for efficient loading and validation of multispectral GeoTIFF image/mask pairs using Rasterio.
+- Performed EDA and found images with a cloud coverage higher than the 30% maximum claimed, as well as geographical overlap between the validation and train dataset.
+- Added dataset validation checks for corrupt files, image-mask alignment, CRS consistency, dimensions, empty masks, constant-value images, and high-brightness/cloud-like artefacts.
+- Evaluated models across multiple random seeds, reported mean ± standard deviation and discussed performance/complexity trade-offs.
 
 ## Results
 
-For both the vanilla U-net and the attention U-net, the metrics recorded are precision, recall, the F1 score, and the intersection over union (IoU). The models are trained using the 4-band Amazon dataset. Each model was trained 3 times with a different seed, and then evaluated on the test set. Below are the results for U-Net.
+For both the vanilla U-net and the attention U-net, the metrics recorded are precision, recall, the F1 score, and the intersection over union (IoU). The models are trained using the 4-band Amazon dataset. Each model was trained 3 times with a different seed, and then evaluated on the test set. Below are the results for the U-Net architecture.
 
 | Metric    | Test Score (Mean ± Std) |
-| --------- | ------------------ |
-| Precision | 0.9639 ± 0.0065    |
-| Recall    | 0.9514 ± 0.0126    |
-| F1 Score  | 0.9575 ± 0.0041    |
-| IoU       | 0.9185 ± 0.0075    |
-
+| --------- | ------------------  |
+| Precision | 0.9704 ± 0.0179     |
+| Recall    | 0.9529 ± 0.0316     |
+| F1 Score  | 0.9612 ± 0.0074     |
+| IoU       | 0.9254 ± 0.0138     |
+| loss      | 0.1134 ± 0.0223     |
 The following table shows the Attention U-Net results.
 
 | Metric    | Test Score (Mean ± Std) |
-| --------- | ------------------ |
-| Precision | 0.9752 ± 0.0020    |
-| Recall    | 0.9680 ± 0.0030    |
-| F1 Score  | 0.9716 ± 0.0007    |
-| IoU       | 0.9447 ± 0.0014    |
+| --------- | ------------------  |
+| Precision | 0.9767 ± 0.0029     |
+| Recall    | 0.9676 ± 0.0031     |
+| F1 Score  | 0.9721 ± 0.0008     |
+| IoU       | 0.9458 ± 0.0015     |
+| loss      | 0.0730 ± 0.0011     |
 
-Considering the small sample size, we cannot say that the results are conclusive. However, it seems likely that the Attention U-Net performs better, given that in all metrics it surpasses the vanilla U-net by at least 1%. Most notable is the difference between the IoU's, with the Attention U-Net achieving a score that is grater by 2.6%.
+
+
+Considering the small sample size, we cannot say that the results are conclusive. However, it seems likely that the Attention U-Net performs better, given that in all metrics but precision, it surpasses the vanilla U-net by at least 1%. Most notable is the difference between the IoU's, with the Attention U-Net achieving a score that is grater by 2%.
 
 ## Visualisations
 
-The loss curve plot of the Attention U-net model shows convergence. Interestingly, the validation loss is smaller than the train loss. With the absence of stochasticity in the preprocessing pipeline, it seems that the validation set is simply more difficult.
-<p align="center">
-  <img width="700" alt="image" src="https://github.com/barbara-barta/deforestation-unet/blob/main/reports/figures/attn_loss_plot.png?raw=true" />
-</p>
 The models outputs match quite well with the actual masks,
 <p align="center">
   <img width="800" alt="image" src="https://github.com/barbara-barta/deforestation-unet/blob/main/reports/figures/attn_unet_predictions.png?raw=true" />
@@ -49,7 +52,7 @@ especially when compared to the outputs of the vanilla U-Net, which are less det
 </p>
 
 The following table shows the number of parameters each model has, as well as the time it took to train the model per image.
-| Network    | Number of Parameters (x10e6) | Train Time per image (s) |
+| Network    | Number of Parameters (x10e6) | Train Time per step (s) |
 | --------- | ------------------ | -----|
 | Attention U-Net | 2.01   | 465 |
 | U-Net | 31.03 | 650 |
@@ -71,7 +74,8 @@ Afterwards, the dataset pipeline is created. It includes:
 
 ## Methodology 
 
-The project implements semantic segmentation models from scratch in PyTorch, with a primary focus on the U-Net architecture and an Attention U-Net variant.
+The project implements semantic segmentation models from scratch in PyTorch Lightning: the U-Net architecture and an Attention U-Net.
+
 The baseline U-Net model consists of:
 1. Four encoder blocks using convolutional layers and max pooling, with the number of layers in the blocks equal to 64, 128, 256, and 512, respectively
 2. a bottleneck layer with 1024 filters,
@@ -93,11 +97,12 @@ The attention gates, seen below, combine the corresponding encoder-phase vector 
 
 For both the attention and vanilla U-net, the BCE loss was used with the Adam optimizer. The U-net model was trained on 20 epochs with a learning rate of 0.0001, and the Attention U-Net was trained on 60 epochs with a learning rate of 0.0005. No data augmentation was used. 
 
-Experiments were conducted in Google Colab using an NVIDIA A100 GPU with 80 GB of VRAM. Models were implemented in Python 3.12 using PyTorch 2.11.
+Experiments were conducted in Google Colab using an NVIDIA A100 GPU with 80 GB of VRAM. Models were implemented in Python 3.13 using PyTorch 2.11.
+
 ## Future Work / Limitations
 
 An idea for future work is motivated by a common problem in climate monitoring using EO data: there is an abundance of unlabeled data gathered through various EO projects, such as the Copernicus Programme and the LANDSAT Program. However, labeled data is sparse. This presents a difficulty if we want to perform semantic segmentation on a region for which there is no labeled forest/non-forest data. One could use a model that was trained on a different region, but it is questionable how well that model would perform, given that forests in different geographical regions might look very different. 
-One way to resolve this issue is to use contrastive learning, where a general model is pre-trained on a large, unlabeled, dataset. The loss criterion is chosen in such a way that the model learns features of the dataset which remain unchanged under variable circumstances, such as differnt lighting or orientation. The model is then fine-tuned on the specific task - in our case, semantic segmentation. A variant of this paradigm that was specifically designed using remote sensing imaging data is the **global style and local matching contrastive learning network (GLCNet)**. Using this method, both the global image-level representation and the local segment representations are learned.
+One way to resolve this issue is to use contrastive learning. A variant of this paradigm that was specifically designed using remote sensing imaging data is the **global style and local matching contrastive learning network (GLCNet)**. Using this method, both the global image-level representation and the local segment representations are learned.
 
 ## Project Organization
 
