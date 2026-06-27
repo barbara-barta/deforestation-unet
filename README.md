@@ -1,4 +1,4 @@
-# Semantic segmentation of Sentinel-2 satellite imagery using (attention) U-Nets
+# Semantic segmentation of Sentinel-2 satellite imagery using (Attention) U-Net
 
 ## Overview
 
