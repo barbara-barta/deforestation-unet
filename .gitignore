@@ -88,9 +88,7 @@ target/
 
 
 # exclude data from source control by default
-/data/RGB
-/data/AT4
-/data/AM4
+data/
 
 # notes
 notes.txt
@@ -101,3 +99,7 @@ notebooks/old/
 # ignore lightning log files
 tb_logs
 tb_logs.zip
+
+MODULARIZATION_NOTES.md
+
+deforestation_unet_modularized

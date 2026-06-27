@@ -1,56 +1,84 @@
 import argparse
+from pathlib import Path
+
 import numpy as np
-import torch
 import rasterio as rio
+import torch
 
-from src.dataset import train_transform
-from src.model import UNet, AttentionUNet
-from src.config import device
-
-
-def load_model(checkpoint_path, attention=False):
-    if attention:
-        model = AttentionUNet(num_inputs=4,num_outputs=1).to(device)
-    else:
-        model = UNet(num_inputs=4,num_outputs=1).to(device)
-    model.load_state_dict(torch.load(checkpoint_path, map_location=torch.device('cpu')))
-    model.eval()
-    return model
+from src.data import MinMaxScale, ToTensor
+from src.models import load_model_from_checkpoint
+from src.plotting import plot_prediction_triplet
+from src.utils import get_device
 
 
-def predict(model, input_path):
-    with rio.open(input_path) as src:
-        image = src.read().astype('float32')
+def parse_args():
+    parser = argparse.ArgumentParser(description="Predict a deforestation mask for one raster image.")
+    parser.add_argument("--checkpoint", type=Path, required=True)
+    parser.add_argument("--model", choices=["unet", "attn_unet", "attention_unet"], required=True)
+    parser.add_argument("--input", type=Path, required=True)
+    parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--threshold", type=float, default=0.5)
+    parser.add_argument("--plot", action="store_true")
+    parser.add_argument("--plot-output", type=Path, default=None)
+    return parser.parse_args()
+
+
+def read_image(path):
+    with rio.open(path) as src:
+        image = src.read().astype("float32")
         profile = src.profile.copy()
 
-    image = train_transform(image)
-    image = image.unsqueeze(0).to(device)
-
-    with torch.no_grad():
-        pred = model(image)
-        pred_mask = (pred > 0.).float().squeeze().cpu().numpy()
-
-    return pred_mask, profile
+    image = MinMaxScale()(image)
+    image = ToTensor()(image)
+    return image, profile
 
 
-def save_prediction(pred_mask, profile, output_path):
-    profile.update(count=1, dtype="uint8")
+def write_mask(mask, profile, output_path):
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+
+    profile.update(
+        count=1,
+        dtype="uint8",
+        nodata=0,
+    )
+
     with rio.open(output_path, "w", **profile) as dst:
-        dst.write(pred_mask.astype(np.uint8), 1)
+        dst.write(mask.astype("uint8"), 1)
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--checkpoint", required=True)
-    parser.add_argument("--input", required=True)
-    parser.add_argument("--output", required=True)
-    parser.add_argument("--attention", action="store_true")
-    args = parser.parse_args()
+    args = parse_args()
 
-    model = load_model(args.checkpoint, attention=args.attention)
-    pred_mask, profile = predict(model, args.input)
-    save_prediction(pred_mask, profile, args.output)
-    print(f"Saved prediction to {args.output}.")
+    device = get_device()
+
+    model = load_model_from_checkpoint(
+        args.model,
+        args.checkpoint,
+        num_inputs=4,
+        num_outputs=1,
+    ).to(device)
+    model.eval()
+
+    image, profile = read_image(args.input)
+    image_batch = image.unsqueeze(0).to(device)
+
+    with torch.no_grad():
+        logits = model(image_batch)
+        probs = torch.sigmoid(logits)
+        pred_mask = (probs > args.threshold).float()
+
+    pred_mask_np = pred_mask.squeeze().cpu().numpy().astype(np.uint8)
+    write_mask(pred_mask_np, profile, args.output)
+
+    print(f"Saved prediction mask to {args.output}")
+
+    if args.plot:
+        plot_prediction_triplet(
+            image=image,
+            pred_mask=pred_mask_np,
+            true_mask=None,
+            save_path=args.plot_output,
+        )
 
 
 if __name__ == "__main__":
