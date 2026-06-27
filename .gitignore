@@ -76,8 +76,8 @@ target/
 # Jupyter NB Checkpoints
 .ipynb_checkpoints/
 
-# ignore modelm files 
-/models/
+# ignore model files 
+models
 
 # vim
 *.swp
@@ -103,3 +103,10 @@ tb_logs.zip
 MODULARIZATION_NOTES.md
 
 deforestation_unet_modularized
+
+
+
+
+
+
+
