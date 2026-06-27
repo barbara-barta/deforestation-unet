@@ -104,11 +104,10 @@ One way to resolve this issue is to use contrastive learning, where a general mo
 ```
 ├── LICENSE            <- Open-source license
 ├── README.md          <- The top-level README for developers using this project
-├── data
-│
-├── models             <- Trained and serialized models, model predictions, or model summaries
-│
-├── notebooks          <- Jupyter notebooks. 
+├── .gitignore          <- The git ignore file
+├── .python-version     <- contains the Python version
+││
+├── notebooks          <- Jupyter notebooks
 │
 ├── references         <- Data dictionaries, manuals, and all other explanatory materials
 │
@@ -123,22 +122,23 @@ One way to resolve this issue is to use contrastive learning, where a general mo
 │
 ├── eval.py            <- Code to evaluate model
 │
+│
+├── validate_dataset.py            <- Code which executes dataset validation
+│
+│
 └── src                         <- Source code for this project
     │
     ├── __init__.py             <- Makes src a Python module
     │
-    ├── config.py               <- Store useful variables and configuration
+    ├── models.py               <- Creates the (attention) u-net lightning modules
     │
-    ├── dataset.py              <- Scripts to download or generate data
+    ├── data.py              <- Scripts to download or generate data
     │
-    ├── plots.py                <- Code to create visualizations 
+    ├── plotting.py                <- Code to create visualizations 
     │
+    ├── validation.py                <- Code which contains the validator class
     │
-    ├── utils.py                <- Code with utility functions
-    │
-    ├── metrics.py                <- Returns the associated metrics (F1, precision, recall, IoU)
-    │
-    └── model.py                <- Code which creates the U-net and Attention U-net models
+    └── utils.py                <- Code with utility functions
 ```
 
 ## Installation and usage
