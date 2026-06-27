@@ -104,42 +104,43 @@ One way to resolve this issue is to use contrastive learning, where a general mo
 ```
 ├── LICENSE            <- Open-source license
 ├── README.md          <- The top-level README for developers using this project
-├── data
-│
-├── models             <- Trained and serialized models, model predictions, or model summaries
-│
-├── notebooks          <- Jupyter notebooks. 
+├── .gitignore          <- The git ignore file
+├── .python-version     <- contains the Python version
+││
+├── notebooks          <- Jupyter notebooks
 │
 ├── references         <- Data dictionaries, manuals, and all other explanatory materials
 │
 ├── reports            <- Generated analysis.
 │   └── figures        <- Generated graphics and figures to be used in reporting
 │
-├── train.py            <- Code to train models
+├── train.py            <- repeated-seed training script
 │
 │
-├── predict.py          <- Code to run model inference with trained models    
+├── predict.py          <- single-image prediction script
 │
 │
-├── eval.py            <- Code to evaluate model
+├── eval.py            <- checkpoint evaluation script
+│
+│
+├── validate_dataset.py            <- standalone AM4 validation script
+│
 │
 └── src                         <- Source code for this project
     │
     ├── __init__.py             <- Makes src a Python module
     │
-    ├── config.py               <- Store useful variables and configuration
+    ├── models.py               <- UNet, Attention UNet, Lightning training/validation/test logic
     │
-    ├── dataset.py              <- Scripts to download or generate data
+    ├── data.py              <- transforms, `DeforestationDataset`, `AM4DataModule`
     │
-    ├── plots.py                <- Code to create visualizations 
+    ├── plotting.py                <- NRG, NDVI, and prediction plotting helpers
     │
+    ├── validation.py                <- `DatasetValidator` and centroid helper
     │
-    ├── utils.py                <- Code with utility functions
-    │
-    ├── metrics.py                <- Returns the associated metrics (F1, precision, recall, IoU)
-    │
-    └── model.py                <- Code which creates the U-net and Attention U-net models
+    └── utils.py                <-  path helpers, local/Colab detection, seeds, device helper
 ```
+
 
 ## Installation and usage
 
