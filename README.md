@@ -219,5 +219,5 @@ This project was developed by Barbara Barta, an Applied Mathematics graduate spe
 
 - GitHub: https://github.com/barbara-barta
 - LinkedIn: https://linkedin.com/in/barbara-barta
-- Email: barbara.barta.2@example.com
+- Email: barbara.barta.2@gmail.com
 
