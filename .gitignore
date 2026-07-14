@@ -97,11 +97,13 @@ notes.txt
 notebooks/old/
 
 # ignore lightning log files
-tb_logs
-tb_logs.zip
+tb_logs*
+tb_logs*.zip
 
 
 deforestation_unet_modularized
+
+predictions/*
 
 
 
