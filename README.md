@@ -52,6 +52,12 @@ especially when compared to the outputs of the vanilla U-Net, which are less det
   <img width="800" alt="image" src="https://github.com/barbara-barta/deforestation-unet/blob/main/reports/figures/unet_predictions.png?raw=true" />
 </p>
 
+When there are dense clouds, the model incorrectly labels it as non-forest: 
+<p align="center">
+  <img width="800" alt="image" src="https://github.com/barbara-barta/deforestation-unet/blob/main/reports/figures/bad_prediction.png?raw=true" />,
+</p>
+however the area is incorrectly marked in the actual mask as well, due to the semi-automated labeling procedure. Therefore the error cannot be attributed to the model. 
+
 The following table shows the number of parameters each model has, as well as the time it took to train the model per image.
 | Network    | Number of Parameters (x10e6) | Train Time per step (s) |
 | --------- | ------------------ | -----|
@@ -64,8 +70,13 @@ Considering that the Attention U-net has 15x less parameters and trains in rough
 
 The project uses a publicly available satellite imagery dataset containing paired satellite images and binary forest masks of the Amazon rainforest. The dataset consists of Sentinel-2 GeoTIFF imagery with a spatial resolution of 10 metres per pixel, and contains four bands: RGB a near-infrared (NIR) band. The train dataset contains 499 images, the validation dataset 100 images, and the test dataset 20 images.
 
-Before creating the dataset object and the dataloader, validations are performed to check that the data is not corrupt, that each image contains 4 bands, and each mask 1 band, that there are no empty values in the masks and images, that corresponding mask and image have equal bounding boxes, resolution, dimensions and coordinate reference system. The datatype for each mask and image is validated. A check is performed to see if there are any images or masks which are a constant value (such as all zero masks). The last validation identifies two images with heavy cloud coverage, even though authors claim that the dataset contains only images where cloud coverage is less than 30%. Consequently, we check all images for clouds by means of a threshold technique: for each pixel, the reflectance values in all 3 visible light bands are summed. When this quantity is higher than a certain threshold, the pixel is denoted as a "high brightness" pixel. Images with the highest number of "high brightness" pixels are plotted and inspected visually and validated. Boxplots are created with reflectance values in all 4 bands, and outliers are detected.
-All images which do not pass the aforementioned validations are removed from the dataset.
+Before creating the dataset object and the dataloader, various validations are performed. Aside from the basic validations (empty and corrupt data, matching dimensions and size), the following is checked:
+- the mask and image align geographically
+- cloud coverage is less than 30%, as reported
+- there is no spatial leakage between the test, train and validation dataset
+- each image and mask pair have equal resolution, dimensions, coordinate reference system
+
+Images which do not pass these validations, as well as images which contain outliers in their reflectance values, are moved to the error folder.
 
 Afterwards, the dataset pipeline is created. It includes:
 1. loading multispectral GeoTIFF images using Rasterio,
@@ -75,7 +86,7 @@ Afterwards, the dataset pipeline is created. It includes:
 
 ## Methodology 
 
-The project implements semantic segmentation models from scratch in PyTorch Lightning: the U-Net architecture and an Attention U-Net.
+The project implements semantic segmentation models from scratch using two architerctures: the U-Net and the Attention U-Net.
 
 The baseline U-Net model consists of:
 1. Four encoder blocks using convolutional layers and max pooling, with the number of layers in the blocks equal to 64, 128, 256, and 512, respectively
@@ -102,7 +113,9 @@ Experiments were conducted in Google Colab using an NVIDIA A100 GPU with 80 GB o
 
 ## Future Work / Limitations
 
-An idea for future work is motivated by a common problem in climate monitoring using EO data: there is an abundance of unlabeled data gathered through various EO projects, such as the Copernicus Programme and the LANDSAT Program. However, labeled data is sparse. This presents a difficulty if we want to perform semantic segmentation on a region for which there is no labeled forest/non-forest data. One could use a model that was trained on a different region, but it is questionable how well that model would perform, given that forests in different geographical regions might look very different. 
+One direction for future work would be to incorporate temporal modelling into the architecture. This could reduce the misclassification of cloud-covered areas as non-forest. By training the model on satellite images of the same location acquired at multiple time points, cloud-covered pixels in one image may be visible in others. The model could then use the temporal information to infer whether the underlying land cover is forest or non-forest. Possible architecture choices include the Temporal Convolutional Network (TCN) which applies convolutions along the time dimension, or a ConvLSTM which first extracts spatial features from each image using convolutions, and then passes those features through an LSTM, which keeps a hidden state summarizing what it has seen in previous images. Another way to resolve the cloud issue would be to use fusion with radar data, which is not affected by clouds.
+
+A final idea for future work is motivated by a common problem in climate monitoring using EO data: there is an abundance of unlabeled data gathered through various EO projects, but labeled data is sparse. This presents a difficulty if we want to perform semantic segmentation on a region for which there is no labeled forest/non-forest data. One could use a model that was trained on a different region, but it is questionable how well that model would perform, given that forests in different geographical regions might look very different. 
 One way to resolve this issue is to use contrastive learning. A variant of this paradigm that was specifically designed using remote sensing imaging data is the **global style and local matching contrastive learning network (GLCNet)**. Using this method, both the global image-level representation and the local segment representations are learned.
 
 ## Project Organization
