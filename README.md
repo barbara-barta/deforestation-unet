@@ -113,10 +113,7 @@ Experiments were conducted in Google Colab using an NVIDIA A100 GPU with 80 GB o
 
 ## Future Work / Limitations
 
-A promising direction for future work would be to incorporate temporal information or fuse optical Sentinel-2 imagery with Sentinel-1 SAR data. Multiple observations of the same area could reduce the impact of cloud occlusion by providing information from cloud-free acquisitions. An important limitation of the current dataset, however, is that the semi-automatically generated segmentation masks contain cloud-related labelling errors. Future work could therefore combine temporal modelling with cloud-aware label refinement or cloud masking to improve the quality of the training labels.
-
-A final idea for future work is motivated by a common problem in climate monitoring using EO data: there is an abundance of unlabeled data gathered through various EO projects, but labeled data is sparse. This presents a difficulty if we want to perform semantic segmentation on a region for which there is no labeled forest/non-forest data. One could use a model that was trained on a different region, but it is questionable how well that model would perform, given that forests in different geographical regions might look very different. 
-One way to resolve this issue is to use contrastive learning. A variant of this paradigm that was specifically designed using remote sensing imaging data is the **global style and local matching contrastive learning network (GLCNet)**. Using this method, both the global image-level representation and the local segment representations are learned.
+A possible extension would be to develop a cloud-aware label refinement pipeline. Cloud-covered pixels could first be identified and excluded from training using an ignore mask. Additional cloud-free Sentinel-2 acquisitions of the same locations could then be used to recover forest and non-forest labels for some of the excluded pixels. This would reduce cloud-related label noise and provide cleaner supervision for model training.
 
 ## Project Organization
 
