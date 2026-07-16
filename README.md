@@ -199,7 +199,7 @@ For first-time data setup, open the notebook in browser-based Colab.
 ## References
 
 ### Tools
-The project was developed primarily in Python using PyTorch for deep learning and model training.
+The project was developed primarily in Python using PyTorch Lightning for deep learning and model training.
 - NumPy for numerical operations,
 - Matplotlib for visualisation,
 - Rasterio for reading GeoTIFF satellite imagery,
