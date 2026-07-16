@@ -113,7 +113,7 @@ Experiments were conducted in Google Colab using an NVIDIA A100 GPU with 80 GB o
 
 ## Future Work / Limitations
 
-A possible extension would be to develop a cloud-aware label refinement pipeline. Cloud-covered pixels could first be identified and excluded from training using an ignore mask. Additional cloud-free Sentinel-2 acquisitions of the same locations could then be used to recover forest and non-forest labels for some of the excluded pixels. This would reduce cloud-related label noise and provide cleaner supervision for model training.
+A clear limitation of the current model is the dataset. Due to the semi-automated mask generation process, some masks incorrectly label cloud-covered areas as forest. A natural extension would be to improve the quality of the segmentation masks. To achieve this, clouds would first be identified in the Sentinel-2 images, for example using the s2cloudless model. Cloud-covered pixels would then be excluded from training the (Attention) U-Net by using a masked loss, preventing the model from learning from unreliable labels. If the evaluation masks were corrected accordingly, this would also lead to more reliable performance metrics. Additional cloud-free Sentinel-2 acquisitions of the same locations could then be used to assign forest or non-forest labels to some of the previously excluded pixels. This could be achieved by applying the trained model, or another validated model, to the cloud-free imagery and manually validating the predicted labels before incorporating them into the training set.
 
 ## Project Organization
 
