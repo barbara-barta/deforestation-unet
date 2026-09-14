@@ -2,9 +2,9 @@
 
 ## Overview
 
-This project implements and evaluates U-Net and Attention U-Net models for binary semantic segmentation of deforestation in Sentinel-2 satellite imagery of the Amazon Rainforest.
+This project implements and evaluates U-Net and Attention U-Net models for forest/non-forest semantic segmentation of Sentinel-2 satellite imagery of the Amazon Rainforest.
 
-The work is based on the paper An attention-based U-Net for detecting deforestation within satellite sensor imagery by David John and Ce Zhang. The original methodology was reimplemented in PyTorch Loghtning.
+The work is based on the paper "An attention-based U-Net for detecting deforestation within satellite sensor imagery" by David John and Ce Zhang. The original methodology was reimplemented in PyTorch Loghtning.
 
 ## Project Highlights
 
