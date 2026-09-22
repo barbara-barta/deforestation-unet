@@ -75,6 +75,7 @@ Following is an image of the attention coefficients from the third skip connecti
 <p align="center">
   <img width="800" alt="image" src="https://github.com/barbara-barta/deforestation-unet/blob/main/reports/figures/attention_coefficients_layer3.png?raw=true" />,
 </p> 
+
 ## Dataset
 
 The project uses a publicly available satellite imagery dataset containing paired satellite images and binary forest masks of the Amazon rainforest. The dataset consists of Sentinel-2 GeoTIFF imagery with a spatial resolution of 10 metres per pixel, and contains four bands: RGB a near-infrared (NIR) band. The train dataset contains 499 images, the validation dataset 100 images, and the test dataset 20 images.
