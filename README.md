@@ -66,6 +66,16 @@ The following table shows the number of parameters each model has, as well as th
 
 Considering that the Attention U-net has 15x less parameters and trains in roughly 2/3 of the time it takes to train the baseline U-Net model, makes its higher performance even more impressive. It seems the attention mechanism is a valuable addition to the network.
 
+Below are plots of the attention coefficients created from a single image from the training dataset. The first plot shows the attention coefficients from the first skip connection. Notice that they are all in the range 0.95-1, meaning that there is little discrimination at this depth about which encoder features carry over via the skip connection.
+<p align="center">
+  <img width="800" alt="image" src="https://github.com/barbara-barta/deforestation-unet/blob/main/reports/figures/attention_coefficients_layer1.png?raw=true" />,
+</p>
+Following is an image of the attention coefficients from the third skip connection, deeper in the network. Here, the coefficients are smaller on average, averaging at around 0.65. Regions with a higher attention coefficient roughly correspond to forested areas.
+
+<p align="center">
+  <img width="800" alt="image" src="https://github.com/barbara-barta/deforestation-unet/blob/main/reports/figures/attention_coefficients_layer3.png?raw=true" />,
+</p> 
+
 ## Dataset
 
 The project uses a publicly available satellite imagery dataset containing paired satellite images and binary forest masks of the Amazon rainforest. The dataset consists of Sentinel-2 GeoTIFF imagery with a spatial resolution of 10 metres per pixel, and contains four bands: RGB a near-infrared (NIR) band. The train dataset contains 499 images, the validation dataset 100 images, and the test dataset 20 images.
